@@ -20,18 +20,23 @@ const rearragne = (productsData: ProductsData): CategoriesData => {
 
 type Props = {
     productsData: ProductsData;
+    stockOnly: boolean;
+    searchPattern: string;
 };
 
 export const ProductTable = (props: Props) => {
-    const rearrangedData = rearragne(props.productsData);
+    const { productsData, stockOnly, searchPattern } = props;
+    const rearrangedData = rearragne(productsData);
 
     const categories: Array<JSX.Element> = [];
-    for (const key in rearrangedData) {
+    for (const categoryName in rearrangedData) {
         categories.push(
             <ProductCategory
-                key={key}
-                categoryName={key}
-                products={rearrangedData[key]}
+                key={categoryName}
+                categoryName={categoryName}
+                products={rearrangedData[categoryName]}
+                stockOnly={stockOnly}
+                searchPattern={searchPattern}
             />,
         );
     }

@@ -17,10 +17,27 @@ export const SearchableProductTable = (props: Props) => {
     const [stockOnly, setStockOnly] = useState<boolean>(false);
     const [searchPattern, setSearchPattern] = useState('');
 
+    const setStockOnlyValue = (v: boolean) => {
+        setStockOnly(v);
+    };
+
+    const setSearchPatternValue = (v: string) => {
+        setSearchPattern(v);
+    };
+
     return (
         <div>
-            <SearchBar stockOnly={stockOnly} searchPattern={searchPattern} />
-            <ProductTable productsData={props.products} />
+            <SearchBar
+                stockOnly={stockOnly}
+                searchPattern={searchPattern}
+                onSetStockOnly={setStockOnlyValue}
+                onSetSearchPattern={setSearchPatternValue}
+            />
+            <ProductTable
+                productsData={props.products}
+                stockOnly={stockOnly}
+                searchPattern={searchPattern}
+            />
         </div>
     );
 };
