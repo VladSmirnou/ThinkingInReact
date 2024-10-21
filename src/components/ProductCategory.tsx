@@ -1,18 +1,18 @@
 import { ProductEntry } from './ProductEntry';
+import { Product } from './ProductTable';
 
 type Props = {
     categoryName: string;
-    productsData: Array<{
-        name: string;
-        price: string;
-        stocked: boolean;
-    }>;
+    products: Array<Product>;
 };
 
 export const ProductCategory = (props: Props) => {
-    const { categoryName, productsData } = props;
-    const productData = productsData[0];
-    const productEntries = <ProductEntry {...productData} />;
+    const { categoryName, products } = props;
+
+    const productEntries = products.map((product) => (
+        <ProductEntry key={product.name} {...product} />
+    ));
+
     return (
         <>
             <tr>

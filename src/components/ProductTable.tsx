@@ -1,21 +1,41 @@
 import { ProductCategory } from './ProductCategory';
-import { Product } from './SearchableProductTable';
+import { ProductData } from './SearchableProductTable';
+
+type ProductsData = Array<ProductData>;
+
+export type Product = Omit<ProductData, 'category'>;
+
+type CategoriesData = {
+    [key: string]: Array<Product>;
+};
+
+const rearragne = (productsData: ProductsData): CategoriesData => {
+    return productsData.reduce((acc: CategoriesData, productData) => {
+        const { category, ...rest } = productData;
+        const products = acc[category];
+        acc[category] = products ? (products.push(rest), products) : [rest];
+        return acc;
+    }, {});
+};
 
 type Props = {
-    products: Array<Product>;
+    productsData: ProductsData;
 };
 
 export const ProductTable = (props: Props) => {
-    const data = {
-        categoryName: 'Fruits',
-        productsData: [
-            { price: '$1', stocked: true, name: 'Apple' },
-            { price: '$1', stocked: true, name: 'Dragonfruit' },
-            { price: '$2', stocked: false, name: 'Passionfruit' },
-        ],
-    };
+    const rearrangedData = rearragne(props.productsData);
 
-    const categories = <ProductCategory {...data} />;
+    const categories: Array<JSX.Element> = [];
+    for (const key in rearrangedData) {
+        categories.push(
+            <ProductCategory
+                key={key}
+                categoryName={key}
+                products={rearrangedData[key]}
+            />,
+        );
+    }
+
     return (
         <table>
             <thead>

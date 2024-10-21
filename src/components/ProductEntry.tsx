@@ -5,10 +5,15 @@ type Props = {
 };
 
 export const ProductEntry = (props: Props) => {
-    const { name, price } = props;
+    const { name, price, stocked } = props;
+
+    const s = {
+        color: stocked ? 'black' : 'red',
+    };
+
     return (
         <tr>
-            <td>{name}</td>
+            <td style={s}>{name}</td>
             <td>{price}</td>
         </tr>
     );
